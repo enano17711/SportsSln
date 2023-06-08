@@ -15,10 +15,11 @@ public class HomeController : Controller
         this.repository = repository;
     }
 
-    public ViewResult Index(int productPage = 1)
+    public ViewResult Index(string? category, int productPage = 1)
         => View(new ProductsListViewModel
         {
             Products = repository.Products
+                .Where(p => category == null || p.Category == category)
                 .OrderBy(p => p.ProductID)
                 .Skip((productPage - 1) * PageSize)
                 .Take(PageSize),
@@ -27,6 +28,7 @@ public class HomeController : Controller
                 CurrentPage = productPage,
                 ItemsPerPage = PageSize,
                 TotalItems = repository.Products.Count()
-            }
+            },
+            CurrentCategory = category
         });
 }
