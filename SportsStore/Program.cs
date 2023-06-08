@@ -38,6 +38,8 @@ builder.Services.AddDbContext<StoreDbContext>(opts =>
         builder.Configuration["ConnectionStrings:SportsStoreConnection"]);
 });
 builder.Services.AddScoped<IStoreRepository, EFStoreRepository>();
+builder.Services.AddRazorPages();
+
 var app = builder.Build();
 //app.MapGet("/", () => "Hello World!");
 app.UseStaticFiles();
@@ -54,5 +56,7 @@ app.MapControllerRoute("pagination",
     new { Controller = "Home", action = "Index", productPage = 1 });
 
 app.MapDefaultControllerRoute();
+app.MapRazorPages();
+
 SeedData.EnsurePopulated(app);
 app.Run();
